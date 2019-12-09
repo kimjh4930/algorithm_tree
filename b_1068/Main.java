@@ -7,7 +7,7 @@ import java.util.Scanner;
 public class Main {
 	
 	static int N;
-	static Node[] nodes = new Node[51];
+	static Node[] nodes = new Node[50];
 	static int count = 0;
 	
 	public static void main(String args[]) {
@@ -18,13 +18,15 @@ public class Main {
 		Node root = null;
 		
 		for(int i=0; i<N; i++) {
+			nodes[i] = new Node(i);
+		}
+		
+		for(int i=0; i<N; i++) {
 			num = scan.nextInt();
 			
 			if(num == -1) {
-				root = new Node(i);
-				nodes[i] = root;
+				root = nodes[i];
 			}else {
-				nodes[i] = new Node(i);
 				nodes[i].parent = nodes[num];
 				nodes[num].children.add(nodes[i]);
 			}
@@ -36,9 +38,15 @@ public class Main {
 			nodes[remove].parent.children.remove(nodes[remove]);
 		}
 		nodes[remove].children.clear();
+		
+		if(root == nodes[remove]) {
+			root = null;
+		}
 		nodes[remove] = null;
 		
-		countLeaf(root);
+		if(root != null) {
+			countLeaf(root);
+		}
 		
 		System.out.println(count);
 		
@@ -47,7 +55,7 @@ public class Main {
 	
 	static void countLeaf (Node node) {
 		if(node.children.size() == 0) {
-			System.out.println("val : " + node.val);
+//			System.out.println("val : " + node.val);
 			count++;
 		}else {
 			for(int i=0; i<node.children.size(); i++) {
